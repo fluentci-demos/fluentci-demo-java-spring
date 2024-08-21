@@ -27,7 +27,7 @@ jobs:
         run: |
           mvn -q test-compile -Dmaven.test.skip=true
           fluentci run --wasm maven test
-          fluentci run --wasm maven test -Pintegration-testing
+          fluentci run --wasm maven "test -Pintegration-testing"
         env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JAVA_HOME: /home/runner/.local/share/mise/installs/java/zulu-17.46.19
