@@ -1,0 +1,43 @@
+name: ci
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup java
+        uses: fluentci-io/setup-fluentci@v5
+        with:
+          wasm: true
+          plugin: java
+          args: setup zulu-17.46.19
+      - name: Setup maven
+        run: |
+          fluentci run --wasm maven setup
+      - name: Build
+        run: |
+          mvn -q package jmeter:configure -Dmaven.test.skip=true
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JAVA_HOME: /home/runner/.local/share/mise/installs/java/zulu-17.46.19
+      - name: Test
+        run: |
+          mvn -q test-compile -Dmaven.test.skip=true
+          fluentci run --wasm maven test
+          fluentci run --wasm maven test -Pintegration-testing
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JAVA_HOME: /home/runner/.local/share/mise/installs/java/zulu-17.46.19
+      - name: Performance tests
+        run: |
+          java -version
+          java -jar target/spring-pipeline-demo.jar > /dev/null &
+          sleep 20
+          mvn -q jmeter:jmeter
+          mvn jmeter:results
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JAVA_HOME: /home/runner/.local/share/mise/installs/java/zulu-17.46.19
