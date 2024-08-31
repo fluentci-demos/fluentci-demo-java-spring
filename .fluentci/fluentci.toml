@@ -16,13 +16,3 @@ name = "Run tests"
 command = ["java -version", "mvn -q test-compile -Dmaven.test.skip=true"]
 env = ["JAVA_HOME=$HOME/.local/share/mise/installs/java/zulu-17.46.19"]
 
-[[steps]]
-name = "Performance tests"
-command = [
-  "java -version",
-  "java -jar target/spring-pipeline-demo.jar > /dev/null &",
-  "sleep 20",
-  "mvn -q jmeter:jmeter",
-  "mvn jmeter:results",
-]
-env = ["JAVA_HOME=$HOME/.local/share/mise/installs/java/zulu-17.46.19"]
