@@ -1,6 +1,6 @@
 [[steps]]
 name = "Setup Java"
-command = ["fluentci run --wasm java setup zulu-17.46.16"]
+command = ["fluentci run --wasm java setup zulu-17.46.19"]
 
 [[steps]]
 name = "Setup maven"
@@ -9,12 +9,12 @@ command = ["fluentci run --wasm maven setup"]
 [[steps]]
 name = "Build"
 command = ["mvn -q package jmeter:configure -Dmaven.test.skip-true"]
-env = ["JAVA_HOME=$HOME/.local/share/mise/installs/java/zulu-17.46.16"]
+env = ["JAVA_HOME=$HOME/.local/share/mise/installs/java/zulu-17.46.19"]
 
 [[steps]]
 name = "Run tests"
 command = ["java -version", "mvn -q test-compile -Dmaven.test.skip=true"]
-env = ["JAVA_HOME=$HOME/.local/share/mise/installs/java/zulu-17.46.16"]
+env = ["JAVA_HOME=$HOME/.local/share/mise/installs/java/zulu-17.46.19"]
 
 [[steps]]
 name = "Performance tests"
@@ -25,4 +25,4 @@ command = [
   "mvn -q jmeter:jmeter",
   "mvn jmeter:results",
 ]
-env = ["JAVA_HOME=$HOME/.local/share/mise/installs/java/zulu-17.46.16"]
+env = ["JAVA_HOME=$HOME/.local/share/mise/installs/java/zulu-17.46.19"]
